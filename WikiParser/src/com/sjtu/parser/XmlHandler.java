@@ -1,15 +1,20 @@
 package com.sjtu.parser;
 
 import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 import javax.xml.parsers.SAXParser;  
 import javax.xml.parsers.SAXParserFactory; 
+
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;  
 import org.xml.sax.SAXException;  
+
+import com.mysql.jdbc.Connection;
 
 public class XmlHandler extends DefaultHandler {
 	private List<Page> pages =null;
@@ -64,7 +69,56 @@ public class XmlHandler extends DefaultHandler {
 		}
 		if(qName.equals("page")){
 			// Add impl of database here.
-			//pages.add(page);
+            
+			MarkDownParser MDparser = new MarkDownParser();
+			String LinkComment = MDparser.getLink(page.getRevision().getComment());
+			String LinkText = MDparser.getLink(page.getRevision().getText());
+			String Category = MDparser.getCategory(page.getRevision().getText());
+			String Infobox = MDparser.getInfobox(page.getRevision().getText());
+			
+			String driver = "com.mysql.jdbc.Driver";
+			String url = "jdbc:mysql://127.0.0.1:3306/swenet";
+			String dbuser = "root";
+			String dbpassword = "root";
+			try {
+				Class.forName(driver);
+				Connection conn = (Connection) DriverManager.getConnection(url, dbuser, dbpassword);
+				if(!conn.isClosed())
+					System.out.println("Succeeded connecting to the Database!");
+
+
+				String sql = "INSERT INTO Page"
+						+ "(idPage,title,redirect_title,idRevision,idParent,"
+						+ "timestamp,idContributor,ContributorName,comment,text,"
+						+ "LinkComment,LinkText,infobox,Category)"
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setInt(1,page.getId());
+				ps.setString(2,page.getTitle());
+				ps.setString(3,page.getRedirect());
+				ps.setInt(4,page.getRevision().getId());
+				ps.setInt(5,page.getRevision().getParentid());
+				ps.setString(6,page.getRevision().getTimestamp());
+				ps.setInt(7,page.getRevision().getContributor().getId());
+				ps.setString(8,page.getRevision().getContributor().getUsername());
+				ps.setString(9,page.getRevision().getComment());
+				ps.setString(10,page.getRevision().getText());	
+				ps.setString(11,LinkComment);	
+				ps.setString(12,LinkText);	
+				ps.setString(13,Infobox);	
+				ps.setString(14,Category);	
+				int count=ps.executeUpdate();
+				conn.close();    
+			} catch(ClassNotFoundException e) {   
+				System.out.println("Sorry,can`t find the Driver!");   
+				e.printStackTrace();   
+			} catch(SQLException e) {   
+				e.printStackTrace();   
+			} catch(Exception e) {   
+				e.printStackTrace();   
+			}
+
+			pages.add(page);
 			counter ++;
 			System.out.println("Finish Page "+counter+": "+page.getTitle());
 			page = null;
@@ -110,13 +164,14 @@ public class XmlHandler extends DefaultHandler {
             }else if(preTag.equals("timestamp")){  
             	revision.setTimestamp(content); 
             }else if(preTag.equals("comment")){  
-            	revision.setComment(content); 
+            	revision.setComment(revision.getComment()+content); 
             }else if(preTag.equals("model")){  
             	revision.setModel(content); 
             }else if(preTag.equals("format")){  
             	revision.setFormat(content); 
-            }else if(preTag.equals("text")){  
-            	revision.setText(content); 
+            }else if(preTag.equals("text")){
+            	
+            	revision.setText(revision.getText()+content); 
             }else if(preTag.equals("sha1")){  
             	revision.setSha1(content); 
             }
@@ -131,3 +186,5 @@ public class XmlHandler extends DefaultHandler {
         }
 	}	
 }
+
+
