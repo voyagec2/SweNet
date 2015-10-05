@@ -5,10 +5,10 @@ public class Revision {
 	private int parentid;
 	private String timestamp;
 	private Contributor contributor;
-	private String comment;
+	private String comment = "";
 	private String model;
 	private String format;
-	private String text;
+	private String text = "";
 	private String sha1;
 	
 	public int getId() {
@@ -67,3 +67,4 @@ public class Revision {
 	}
 	
 }
+
