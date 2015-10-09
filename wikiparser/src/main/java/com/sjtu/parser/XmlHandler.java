@@ -1,20 +1,18 @@
 package com.sjtu.parser;
 
+import com.mysql.jdbc.Connection;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-
-import javax.xml.parsers.SAXParser;  
-import javax.xml.parsers.SAXParserFactory; 
-
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.Attributes;  
-import org.xml.sax.SAXException;  
-
-import com.mysql.jdbc.Connection;
 
 public class XmlHandler extends DefaultHandler {
 	private List<Page> pages =null;
