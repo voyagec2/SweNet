@@ -1,7 +1,5 @@
 package com.sjtu.parser;
 
-import java.util.Stack;
-
 public class MarkDownParser {
 	
 	
