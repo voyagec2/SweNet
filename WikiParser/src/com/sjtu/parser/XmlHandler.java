@@ -25,6 +25,16 @@ public class XmlHandler extends DefaultHandler {
 	private String preTag = "";
 	private int counter = 0;
 	
+	
+	String driver = "com.mysql.jdbc.Driver";
+	String url = "jdbc:mysql://127.0.0.1:3306/swenet";
+	String dbuser = "root";
+	String dbpassword = "root";
+	Connection conn;
+	String sql;
+	int count;
+	java.sql.PreparedStatement ps;
+	
 	public List<Page> getPages(InputStream xmlStream) throws Exception{
 		SAXParserFactory factory = SAXParserFactory.newInstance();  
         SAXParser parser = factory.newSAXParser();  
@@ -41,6 +51,17 @@ public class XmlHandler extends DefaultHandler {
 	public void startDocument() throws SAXException {
 		pages = new ArrayList<Page>();
 		state = new Stack<String>();
+		try {
+			Class.forName(driver);
+			conn = (Connection) DriverManager.getConnection(url, dbuser, dbpassword);
+			if(!conn.isClosed())
+				System.out.println("Succeeded connecting to the Database!");
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		
+
 	}
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -70,29 +91,21 @@ public class XmlHandler extends DefaultHandler {
 		if(qName.equals("page")){
 			// Add impl of database here.
             
-			MarkDownParser MDparser = new MarkDownParser();
+			/*MarkDownParser MDparser = new MarkDownParser();
 			String LinkComment = MDparser.getLink(page.getRevision().getComment());
 			String LinkText = MDparser.getLink(page.getRevision().getText());
 			String Category = MDparser.getCategory(page.getRevision().getText());
 			String Infobox = MDparser.getInfobox(page.getRevision().getText());
+			*/
 			
-			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://127.0.0.1:3306/swenet";
-			String dbuser = "root";
-			String dbpassword = "root";
 			try {
-				Class.forName(driver);
-				Connection conn = (Connection) DriverManager.getConnection(url, dbuser, dbpassword);
-				if(!conn.isClosed())
-					System.out.println("Succeeded connecting to the Database!");
 
-
-				String sql = "INSERT INTO Page"
+				 sql = "INSERT INTO Page"
 						+ "(idPage,title,redirect_title,idRevision,idParent,"
-						+ "timestamp,idContributor,ContributorName,comment,text,"
-						+ "LinkComment,LinkText,infobox,Category)"
-						+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-				java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+						+ "timestamp,idContributor,ContributorName,comment,text)"
+						+ " VALUES (?,?,?,?,?,?,?,?,?,?)";
+				
+				ps = conn.prepareStatement(sql);
 				ps.setInt(1,page.getId());
 				ps.setString(2,page.getTitle());
 				ps.setString(3,page.getRedirect());
@@ -103,24 +116,19 @@ public class XmlHandler extends DefaultHandler {
 				ps.setString(8,page.getRevision().getContributor().getUsername());
 				ps.setString(9,page.getRevision().getComment());
 				ps.setString(10,page.getRevision().getText());	
-				ps.setString(11,LinkComment);	
-				ps.setString(12,LinkText);	
-				ps.setString(13,Infobox);	
-				ps.setString(14,Category);	
-				int count=ps.executeUpdate();
-				conn.close();    
-			} catch(ClassNotFoundException e) {   
-				System.out.println("Sorry,can`t find the Driver!");   
-				e.printStackTrace();   
-			} catch(SQLException e) {   
-				e.printStackTrace();   
-			} catch(Exception e) {   
-				e.printStackTrace();   
+				count=ps.executeUpdate();
+				
 			}
-
-			pages.add(page);
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+              
+			//pages.add(page);
 			counter ++;
+			if (counter%1000==0)
 			System.out.println("Finish Page "+counter+": "+page.getTitle());
+		
 			page = null;
 			state.pop();
 		}
