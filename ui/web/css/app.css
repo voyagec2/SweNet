@@ -1,46 +1,33 @@
-﻿* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    border: 0;
-}
-
-body {
+﻿body {
     background-color: rgb(236, 240, 241);
 }
 
-header {
-    background: #2c3e50;
+header nav.navbar {
+    border-radius: 0 !important;
 }
 
-header ul {
-    list-style-type: none;
-    
-    white-space: nowrap;
-    font-size: 1.5rem;
-    
-    margin-left: 5rem;
-    margin-right: 5rem;
-}
-
-header ul li {
-    color: white;
-    
-    text-align: center;
-    line-height: 100%;
-    
+header .navbar .navbar-nav {
     display: inline-block;
-    height: 40px;
-    width: 20%;
-   
-    padding: 0.5rem 1rem;
+    float: none;
 }
 
-header ul li.active {
-    color: #ffab64;
+header .navbar .navbar-collapse {
+    text-align: center;
 }
 
-header ul li:hover {
-    background-color: rgba(158, 163, 204, 0.49);
-    cursor: pointer;
+section nav {
+    padding-top: 30px;
+}
+
+section nav .navbar-brand {
+    padding: 0;
+}
+
+section nav .search-input {
+    padding-top: 10px;
+}
+
+section nav .search-btn {
+    text-align: right;
+    padding-top: 10px;
 }

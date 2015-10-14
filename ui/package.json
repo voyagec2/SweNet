@@ -28,7 +28,8 @@
     "gulp-size": "^0.3.0",
     "gulp-uglify": "^0.2.1",
     "gulp-useref": "^1.1.1",
-    "jshint-stylish": "^0.1.5"
+    "jshint-stylish": "^0.1.5",
+    "stream-series": "*"
   },
   "engines": {
     "node": "4.2.0"

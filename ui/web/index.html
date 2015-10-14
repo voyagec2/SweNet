@@ -9,9 +9,15 @@
         <!-- build:css({web, .tmp}) css/app.css -->
         <!-- inject:css -->
 
+        <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
+
         <link rel="stylesheet" href="css/animate.css">
-        <link rel="stylesheet" href="css/app.css">
+
+        <link rel="stylesheet" href="css/flat-ui.css">
+
         <link rel="stylesheet" href="js/lib/loading-bar.min.css">
+
+        <link rel="stylesheet" href="css/app.css">
 
         <!-- endinject -->    
         <!-- endbuild -->
@@ -24,18 +30,56 @@
     </head>
     
     <body ng-cloak>
-        <header class="container">
-            <ul>
-                <li>Home</li>
-                <li>Classes</li>
-                <li>Properties</li>
-                <li>Instances</li>
-                <li>About</li>
-            </ul>
+        <header>
+            <nav class="navbar navbar-inverse navbar-embossed" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                        <span class="sr-only">Toggle navigation</span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                    <ul class="nav navbar-nav">
+                        <li><a href>Home</a></li>
+                        <li><a href>Classes</a></li>
+                        <li><a href>Properties</a></li>
+                        <li><a href>Instances</a></li>
+                        <li><a href>AboutUs</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+            <!-- /navbar -->
         </header>
-        
-        <div id="searcher" class="container">
-        </div>
+
+        <section class="container">
+            <nav class="navbar navbar-lg col-xs-12">
+                <a class="navbar-brand col-xs-2" href="">SweNet</a>
+                <div class="col-xs-8 search-input">
+                    <from>
+                        <div class="search-bar input-group">
+                            <input type="text" id="search-info" class="form-control">
+                            <div class="input-group-btn">
+                                <button class="btn btn-inverse dropdown-toggle" type="button" data-toggle="dropdown">
+                                    All <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">All</a></li>
+                                    <li><a href="#">Classes</a></li>
+                                    <li><a href="#">Properties</a></li>
+                                    <li><a href="#">Instances</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </from>
+                </div>
+                <div class="col-xs-2 search-btn">
+                    <button class="btn btn-inverse">
+                        Search
+                    </button>
+                </div>
+            </nav>            
+        </section>
+
 
         <ng-view></ng-view>
         
@@ -50,7 +94,13 @@
 
         <!-- build:js js/main.js -->
         <!-- inject:js -->
+        <script src="js/vendor/html5shiv.js"></script>
+        <script src="js/vendor/jquery.min.js"></script>
+        <script src="js/vendor/respond.min.js"></script>
+        <script src="js/vendor/video.js"></script>
         <script src="js/app.js"></script>
+        <script src="js/flat-ui.js"></script>
+        <script src="js/controller/main.js"></script>
         <script src="js/lib/loading-bar.min.js"></script>
         <script src="js/lib/markdown.js"></script>
         <!-- endinject -->

@@ -1,15 +1,23 @@
 (function(){
     'use strict';
 
+    var series = require('stream-series');
     var gulp = require('gulp');
     var $ = require('gulp-load-plugins')({
       pattern: ['gulp-*' ]
     });
 
     gulp.task('wiredep', function () {
+      var vendorJS = gulp.src('web/js/vendor/**/*.js', { read: false });
+      var appJS = gulp.src(['web/js/**/*.js', '!web/js/vendor/**'], { read: false });
+      var vendorCSS = gulp.src('web/css/vendor/**/*.css', { read: false });
+      var otherCSS = gulp.src(['web/css/**/*.css', 'web/js/lib/*.css', '!web/css/vendor/**', '!web/css/app.css' ], { read: false });
+      var appCSS = gulp.src('web/css/app.css', { read: false, relative: true});
+      
       gulp.src('web/index.html')
-        .pipe($.inject(gulp.src('web/js/**/*.js'), { read: false, relative: true}))
-        .pipe($.inject(gulp.src(['web/css/**/*.css', 'web/js/lib/*.css' ]), { read: false, relative: true}))
+        .pipe($.inject(series(vendorJS, appJS, vendorCSS, otherCSS, appCSS), {
+            relative: true
+        }))
         .pipe(gulp.dest('web'))
         .pipe($.size());
     });
@@ -51,6 +59,7 @@
         gulp.src('web/music/**').pipe(gulp.dest('dist/music')).pipe($.size());
         gulp.src('web/img/**').pipe(gulp.dest('dist/img')).pipe($.size());
         gulp.src('web/favicon.ico').pipe(gulp.dest('dist')).pipe($.size());
+        gulp.src('web/fonts').pipe(gulp.dest('dist')).pipe($.size());
     });
 
     // prepare all for dist
