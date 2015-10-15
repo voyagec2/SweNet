@@ -8,11 +8,12 @@
     });
 
     gulp.task('wiredep', function () {
-        var libJs = gulp.src('web/js/lib/*.js', { read: false });
+        var angularJs = gulp.src('web/js/lib/angular.min.js', { read: false });
+        var libJs = gulp.src(['web/js/lib/*.js', '!web/js/lib/angular.min.js'], { read: false });
         var appJs = gulp.src(['web/js/**/*.js', '!web/js/lib/*.js'], { read: false });
         
       gulp.src('web/index.html')
-        .pipe($.inject(stream(libJs, appJs), { relative: true}))
+        .pipe($.inject(stream(angularJs, libJs, appJs), { relative: true}))
         .pipe($.inject(gulp.src(['web/css/**/*.css', 'web/js/lib/*.css' ]), { read: false, relative: true}))
         .pipe(gulp.dest('web'))
         .pipe($.size());

@@ -131,6 +131,6 @@ header ul li:hover {
 .intro p {
     text-align: left;
     
-    padding-top: 2rem;
+    padding: 2rem;
     font-size: 1.5rem;
 }
