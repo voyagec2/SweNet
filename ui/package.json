@@ -7,9 +7,7 @@
     "type": "git",
     "url": "https://github.com/voyagec2/SweNet"
   },
-  "keywords": [
-    
-  ],
+  "keywords": [],
   "dependencies": {
     "express": "*"
   },
@@ -28,7 +26,8 @@
     "gulp-size": "^0.3.0",
     "gulp-uglify": "^0.2.1",
     "gulp-useref": "^1.1.1",
-    "jshint-stylish": "^0.1.5"
+    "jshint-stylish": "^0.1.5",
+    "stream-series": "~0.1.1"
   },
   "engines": {
     "node": "4.2.0"

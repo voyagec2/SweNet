@@ -15,7 +15,12 @@
         'ngRoute',
         'btford.markdown',
         'angular-loading-bar',
-        'SweNet.tpl'
+        'SweNet.tpl',
+        'SweNet.controller',
+        'SweNet.service',
+        'SweNet.resource',
+        'SweNet.filter',
+        'SweNet.directive'
     ]);
 
     app.config(['cfpLoadingBarProvider', 

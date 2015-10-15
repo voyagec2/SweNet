@@ -1,14 +1,18 @@
 (function(){
     'use strict';
 
+    var stream = require('stream-series');
     var gulp = require('gulp');
     var $ = require('gulp-load-plugins')({
       pattern: ['gulp-*' ]
     });
 
     gulp.task('wiredep', function () {
+        var libJs = gulp.src('web/js/lib/*.js', { read: false });
+        var appJs = gulp.src(['web/js/**/*.js', '!web/js/lib/*.js'], { read: false });
+        
       gulp.src('web/index.html')
-        .pipe($.inject(gulp.src('web/js/**/*.js'), { read: false, relative: true}))
+        .pipe($.inject(stream(libJs, appJs), { relative: true}))
         .pipe($.inject(gulp.src(['web/css/**/*.css', 'web/js/lib/*.css' ]), { read: false, relative: true}))
         .pipe(gulp.dest('web'))
         .pipe($.size());
